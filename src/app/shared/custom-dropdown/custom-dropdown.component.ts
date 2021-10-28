@@ -6,20 +6,31 @@ import {
   OnInit,
   Output,
   EventEmitter,
+  forwardRef,
+  Provider,
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+const COUNTRY_CONTROL_VALUE_ACCESSOR: Provider = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => CustomDropdownComponent),
+  multi: true,
+};
 
 @Component({
   selector: 'app-custom-dropdown',
   templateUrl: './custom-dropdown.component.html',
   styleUrls: ['./custom-dropdown.component.scss'],
+  providers: [COUNTRY_CONTROL_VALUE_ACCESSOR],
 })
-export class CustomDropdownComponent implements OnInit {
+export class CustomDropdownComponent implements ControlValueAccessor  {
   @Input() options: string[] = [];
   @Input() selectedValue: string | null = null;
   @Input() label: string = '';
   isDropdownShown = false;
-
-  @Output() valueChosed = new EventEmitter<string>();
+  disabled = false;
+  private onTouched!: Function;
+  private onChanged!: Function;
 
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
@@ -30,10 +41,22 @@ export class CustomDropdownComponent implements OnInit {
 
   constructor(private eRef: ElementRef) {}
 
-  ngOnInit(): void {}
-
   onSelectOption(val: string) {
     this.selectedValue = val;
-    this.valueChosed.emit(val);
+    this.onTouched()
+    this.onChanged(val)
+  }
+
+  writeValue(value: string): void {
+    this.selectedValue = value ?? 'IN';
+  }
+  registerOnChange(fn: any): void {
+    this.onChanged = fn; // <-- save the function
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn; // <-- save the function
+  }
+  setDisabledState(isDisabled: boolean) {
+    this.disabled = isDisabled;
   }
 }
