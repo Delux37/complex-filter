@@ -1,0 +1,11 @@
+@function convertToFontWeight($weight-name) { 
+    @if $weight-name == 'thin'{
+        @return 100;
+    }@else if $weight-name == 'light'{
+        @return 300;
+    }@else if $weight-name == 'medium' {
+        @return 500;
+    }@else {
+        @return 400;
+    }
+ }

@@ -1,0 +1,54 @@
+@import '../../../styles/variables';
+@import '../../../styles/palette';
+
+.dropdown-container {
+    padding: 5px 10px;
+    border: 1px solid $outline;
+    display: inline-block;
+    margin: 50px;
+    border-radius: 4px;
+    transition: all .3s ease-in-out;
+    position: relative;
+    &:hover{
+        cursor: pointer;
+        border: 1px solid $primary;
+    }
+    &__label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 8px;
+        color: $secondary-text;
+        cursor: pointer;
+        i {
+            transition: all .3s ease-in-out;
+        }
+    }
+    &__options {
+        position: absolute;
+        top: 35px;
+        left: 0;
+        width: 100%;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        color: $secondary-text;
+        z-index: 10;
+        box-shadow: $primary-box-shadow;
+        .option {
+            padding: 5px 10px;
+            transition: all .3s ease-in-out;
+            &:hover{
+                background-color: $outline;
+                color: $primary-text;
+            }
+        }
+    }
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+.selected {
+    color: $primary-text;
+}

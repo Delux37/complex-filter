@@ -1,1 +1,13 @@
-<p>custom-dropdown works!</p>
+<div class="dropdown-container" (click)="isDropdownShown = !isDropdownShown">
+    <label class="dropdown-container__label"
+        [ngClass]="{ selected : selectedValue }"
+    >
+        <span>{{ selectedValue ? selectedValue : label }}</span>
+        <i class="fas fa-caret-down" 
+        [ngClass]="{ rotate : isDropdownShown}"
+        ></i>
+    </label>
+    <div class="dropdown-container__options" *ngIf="isDropdownShown">
+        <p *ngFor="let option of options" class="option" (click)="onSelectOption(option)">{{ option }}</p>
+    </div>
+</div>
