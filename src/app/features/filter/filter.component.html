@@ -2,6 +2,7 @@
   class="filter-form"
   *ngIf="filterService.state$ | async as vm"
   [formGroup]="form"
+  (ngSubmit)="onSubmit()"
 >
   <div class="row">
     <div class="form-control">

@@ -9,7 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FilterComponent {  
   constructor(public filterService:FilterService) { }
-
+  temp: FormControl = new FormControl()
   form = new FormGroup({
     sellingType: new FormControl(),
     brand: new FormControl(),
@@ -18,10 +18,9 @@ export class FilterComponent {
   })
 
   ngOnInit() {
-    this.form.get('brand')?.valueChanges
-    .subscribe(e => console.log(e))
+    
+    this.form.controls.brand = this.filterService.buildModelControl()
   }
   onSubmit() {
-    console.log(this.form);
   }
 }

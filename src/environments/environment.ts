@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   api: {
-    brands: 'https://the-vehicles-api.herokuapp.com/brands/'
+    brands: 'https://the-vehicles-api.herokuapp.com/brands/',
+    model: ' https://the-vehicles-api.herokuapp.com/models?brandId=',
+    category: 'https://the-vehicles-api.herokuapp.com/types/'
   }
 };
 
