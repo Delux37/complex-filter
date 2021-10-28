@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomDropdownComponent } from './custom-dropdown/custom-dropdown.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [CustomDropdownComponent]
-const modules = [CommonModule]
+const modules = [CommonModule, ReactiveFormsModule]
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   imports: [
     ...modules

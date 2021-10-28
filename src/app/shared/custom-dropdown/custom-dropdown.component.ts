@@ -48,7 +48,7 @@ export class CustomDropdownComponent implements ControlValueAccessor  {
   }
 
   writeValue(value: string): void {
-    this.selectedValue = value ?? 'IN';
+    value ? this.selectedValue = 'value' : '';
   }
   registerOnChange(fn: any): void {
     this.onChanged = fn; // <-- save the function
