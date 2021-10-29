@@ -6,14 +6,15 @@ import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/op
 import { Brand } from '../model/brands.model';
 import { FormControl } from '@angular/forms';
 import { Model } from '../model/models.model';
+import { Category } from '../model/category.model';
 
 @Injectable()
 export class FilterService {
   fullBrand$ = new BehaviorSubject<Brand[]>([]);
   sellingType$ = new BehaviorSubject(['Sell', 'Rent']);
   brand$ = new BehaviorSubject<string[]>(['Loading']);
-  model$ = new BehaviorSubject(['Loading']);
-  category$ = new BehaviorSubject(['Loading']);
+  model$ = new BehaviorSubject<string[]>(['Loading']);
+  category$ = new BehaviorSubject<string[]>(['Loading']);
 
   state$ = combineLatest([
     this.sellingType$,
@@ -37,6 +38,13 @@ export class FilterService {
         this.brand$.next(brands.brandNames)
         this.fullBrand$.next(brands.fullBrand)
        })
+    )
+    .subscribe();
+
+    this.http.get<Category[]>(environment.api.category)
+    .pipe(
+      map(cats => cats.map(cat => cat.type)),
+      tap(cat => this.category$.next(cat))
     )
     .subscribe()
   }
