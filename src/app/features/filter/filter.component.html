@@ -34,7 +34,23 @@
       ></app-custom-dropdown>
     </div>
   </div>
-  <div class="row"></div>
+  <div class="row">
+    <div class="form-control union">
+      <app-custom-dropdown 
+      label="Year - from"
+      [options]="vm[4]"
+      formControlName="yearFrom"
+      ></app-custom-dropdown>
+      <app-custom-dropdown 
+      label="Year - to"
+      [options]="vm[4]"
+      formControlName="yearTo"
+      ></app-custom-dropdown>
+    </div>
+    <div class="form-control union">
+      
+    </div>
+  </div>
   <div class="row"></div>
   <div class="row"></div>
   <!-- <input type="submit" value="submit" /> -->

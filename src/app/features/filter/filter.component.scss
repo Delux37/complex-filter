@@ -2,6 +2,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     .form-control{ 
-
+        &.union {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
     }
 }

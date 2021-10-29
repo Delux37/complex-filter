@@ -15,16 +15,19 @@ export class FilterService {
   brand$ = new BehaviorSubject<string[]>(['Loading']);
   model$ = new BehaviorSubject<string[]>(['Loading']);
   category$ = new BehaviorSubject<string[]>(['Loading']);
+  years$ = new BehaviorSubject<string[]>([]);
 
   state$ = combineLatest([
     this.sellingType$,
     this.brand$,
     this.model$,
-    this.category$
+    this.category$,
+    
+    this.years$
   ])
 
-
   constructor(private http: HttpClient) { 
+    // fetching brands
     this.http.get<Brand[]>(environment.api.brands)
     .pipe(
       map(brands => {
@@ -41,12 +44,16 @@ export class FilterService {
     )
     .subscribe();
 
+    // fetching categories
     this.http.get<Category[]>(environment.api.category)
     .pipe(
       map(cats => cats.map(cat => cat.type)),
       tap(cat => this.category$.next(cat))
     )
     .subscribe()
+
+    // intializing Years
+    this.initialYear();
   }
 
   buildModelControl(): FormControl {
@@ -77,5 +84,16 @@ export class FilterService {
     )
     .subscribe()
     return brand;
+  }
+
+  initialYear() {
+    const currDate = new Date;
+    const currYear = currDate.getFullYear();
+    const tempArr: string[] = [];
+    for(let i = currYear - 100; i <= currYear; i++){
+      tempArr.push(i.toString());
+    }
+    tempArr.sort((a,b) => +b - +a);
+    this.years$.next(tempArr);
   }
 }

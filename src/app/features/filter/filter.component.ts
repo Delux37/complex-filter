@@ -14,11 +14,12 @@ export class FilterComponent {
     sellingType: new FormControl(),
     brand: new FormControl(),
     model: new FormControl(),
-    category: new FormControl()
+    category: new FormControl(),
+    yearFrom: new FormControl(),
+    yearTo: new FormControl()
   })
 
   ngOnInit() {
-    
     this.form.controls.brand = this.filterService.buildModelControl()
   }
   onSubmit() {
