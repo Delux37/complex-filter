@@ -1,0 +1,18 @@
+@import '../../../styles/palette';
+
+input {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 5px 10px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid $outline;
+    outline: none;
+    color: $primary-text;
+    &::placeholder{
+        color: $secondary-text;
+    }
+    &:focus {
+        border: 1px solid $primary;
+    }
+}

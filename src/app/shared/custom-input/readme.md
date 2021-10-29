@@ -1,0 +1,1 @@
+this component has 1 input property. that's placeholder.

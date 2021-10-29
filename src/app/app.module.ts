@@ -13,7 +13,7 @@ const modules = [BrowserModule,ReactiveFormsModule, SharedModule, FilterModule,
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   imports: [
     ...modules
