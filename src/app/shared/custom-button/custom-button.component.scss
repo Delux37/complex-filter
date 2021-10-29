@@ -1,0 +1,19 @@
+@import '../../../styles/palette';
+
+button {
+    border: none;
+    outline: none;
+    background-color: $primary;
+    width: 100%;
+    padding: 5px;
+    font-size: inherit;
+    font-family: inherit;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    column-gap: 5px;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid $primary;
+    min-height: 33px;
+}
