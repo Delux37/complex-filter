@@ -36,6 +36,8 @@
         z-index: 10;
         box-shadow: $primary-box-shadow;
         background-color: #fff;
+        overflow-y: scroll;
+        height: 300px;
         .option {
             padding: 5px 10px;
             transition: all .3s ease-in-out;
@@ -53,3 +55,17 @@
 .selected {
     color: $primary-text;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

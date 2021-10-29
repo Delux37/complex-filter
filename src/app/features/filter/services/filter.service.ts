@@ -40,6 +40,9 @@ export class FilterService {
     this.wheel$,
     this.location$
   ])
+  .pipe(
+    tap(e => console.log(e))
+  )
 
   constructor(private http: HttpClient) { 
     this.initialEngineSize();
