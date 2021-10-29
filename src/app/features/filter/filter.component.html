@@ -2,7 +2,6 @@
   class="filter-form"
   *ngIf="filterService.state$ | async as vm"
   [formGroup]="form"
-  (ngSubmit)="onSubmit()"
 >
   <div class="row">
     <div class="form-control">
@@ -34,24 +33,101 @@
       ></app-custom-dropdown>
     </div>
   </div>
-  <div class="row">
-    <div class="form-control union">
-      <app-custom-dropdown 
-      label="Year - from"
-      [options]="vm[4]"
-      formControlName="yearFrom"
-      ></app-custom-dropdown>
-      <app-custom-dropdown 
-      label="Year - to"
-      [options]="vm[4]"
-      formControlName="yearTo"
-      ></app-custom-dropdown>
+  <div class="row second">
+    <div class="row__nested--first">
+      <div class="form-control union">
+        <app-custom-dropdown 
+        label="Year - from"
+        [options]="vm[4]"
+        formControlName="yearFrom"
+        ></app-custom-dropdown>
+        <app-custom-dropdown 
+        label="Year - to"
+        [options]="vm[4]"
+        formControlName="yearTo"
+        ></app-custom-dropdown>
+      </div>
+      <div class="form-control union">
+        <app-custom-input
+        formControlName="priceFrom"
+        placeholder="Price - from"
+        ></app-custom-input>
+        <app-custom-input
+        formControlName="priceTo"
+        placeholder="Price - to"
+        ></app-custom-input>
+      </div>
+      <div class="form-control union">
+        <app-custom-dropdown 
+        label="Engine - from"
+        [options]="vm[5]"
+        formControlName="engineSizeFrom"
+        ></app-custom-dropdown>
+        <app-custom-dropdown 
+        label="Engine - to"
+        [options]="vm[5]"
+        formControlName="engineSizeTo"
+        ></app-custom-dropdown>
+      </div>
     </div>
-    <div class="form-control union">
-      
+    <div class="row__nested--second">
+      <div class="form-control">
+        <app-custom-dropdown
+          formControlName="transmission"
+          label="Transmission"
+          [options]="vm[6]"
+        ></app-custom-dropdown>
+      </div>
+      <div class="form-control">
+        <app-custom-dropdown
+          formControlName="fuel"
+          label="Fuel"
+          [options]="vm[7]"
+        ></app-custom-dropdown>
+      </div>
+      <div class="form-control">
+        <app-custom-dropdown
+          formControlName="upload"
+          label="Upload"
+          [options]="vm[8]"
+        ></app-custom-dropdown>
+      </div>
+    </div>
+    <div class="search">
+      <app-custom-input
+        placeholder="Enter VIN, ID, Phone or any search term..."
+        formControlName="search"
+      >
+      </app-custom-input>
     </div>
   </div>
-  <div class="row"></div>
-  <div class="row"></div>
+  <div class="row">
+    <div class="form-control">
+      <app-custom-dropdown
+        formControlName="custom"
+        label="Custom"
+        [options]="vm[9]"
+      ></app-custom-dropdown>
+    </div>
+    <div class="form-control">
+      <app-custom-dropdown
+        formControlName="wheel"
+        label="Wheel"
+        [options]="vm[10]"
+      ></app-custom-dropdown>
+    </div>
+    <div class="form-control">
+      <app-custom-dropdown
+        formControlName="location"
+        label="Location"
+        [options]="vm[11]"
+      ></app-custom-dropdown>
+    </div>
+    <div class="form-control">
+      <app-custom-button icon="fas fa-search" (clicked)="onSubmit()">
+        <p class="searchTerm">Search</p>
+      </app-custom-button>
+    </div>
+  </div>
   <!-- <input type="submit" value="submit" /> -->
 </form>

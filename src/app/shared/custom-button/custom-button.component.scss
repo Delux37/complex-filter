@@ -16,4 +16,9 @@ button {
     border-radius: 4px;
     border: 1px solid $primary;
     min-height: 33px;
+    transition: all .3s ease-in-out;
+    &:hover {
+        cursor: pointer;
+        background-color: $primary-hover;
+    }
 }

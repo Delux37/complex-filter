@@ -1,10 +1,26 @@
 .filter-form{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    column-gap: 5px;
+    width: 80%;
+    min-width: 1100px;
+    margin: 50px auto;
     .form-control{ 
         &.union {
             display: grid;
             grid-template-columns: 1fr 1fr;
+        }
+        margin-bottom: 5px;
+    }
+    .row.second {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 3fr 1fr;
+        column-gap: 5px;
+        
+        .search {
+            grid-column: 1 / -1;
+            
         }
     }
 }

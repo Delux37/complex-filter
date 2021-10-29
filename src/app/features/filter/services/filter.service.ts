@@ -10,23 +10,46 @@ import { Category } from '../model/category.model';
 
 @Injectable()
 export class FilterService {
+  
   fullBrand$ = new BehaviorSubject<Brand[]>([]);
   sellingType$ = new BehaviorSubject(['Sell', 'Rent']);
   brand$ = new BehaviorSubject<string[]>(['Loading']);
   model$ = new BehaviorSubject<string[]>(['Loading']);
   category$ = new BehaviorSubject<string[]>(['Loading']);
   years$ = new BehaviorSubject<string[]>([]);
+  engineSizes$ = new BehaviorSubject<string[]>([])
+  transmission$ = new BehaviorSubject<string[]>([]);
+  fuelType$ = new BehaviorSubject<string[]>([]);
+  uploadDate$ = new BehaviorSubject<string[]>([]);
+  custom$ = new BehaviorSubject<string[]>([]);
+  wheel$ = new BehaviorSubject<string[]>([]);
+  location$ = new BehaviorSubject<string[]>([]);
+
 
   state$ = combineLatest([
     this.sellingType$,
     this.brand$,
     this.model$,
     this.category$,
-    
-    this.years$
+    this.years$,
+    this.engineSizes$,
+    this.transmission$,
+    this.fuelType$,
+    this.uploadDate$,
+    this.custom$,
+    this.wheel$,
+    this.location$
   ])
 
   constructor(private http: HttpClient) { 
+    this.initialEngineSize();
+    this.initialTransmission();
+    this.initialFuel();
+    this.initialUpload();
+    this.initialCustom();
+    this.initialWheel();
+    this.initialLocation();
+    this.initialYear();
     // fetching brands
     this.http.get<Brand[]>(environment.api.brands)
     .pipe(
@@ -51,9 +74,6 @@ export class FilterService {
       tap(cat => this.category$.next(cat))
     )
     .subscribe()
-
-    // intializing Years
-    this.initialYear();
   }
 
   buildModelControl(): FormControl {
@@ -86,6 +106,17 @@ export class FilterService {
     return brand;
   }
 
+  buildSearchTermControl(): FormControl {
+    const searchTerm = new FormControl();
+    searchTerm.valueChanges
+    .pipe(
+      tap(e => console.log(e))
+    )
+    .subscribe()
+
+    return searchTerm;
+  }
+
   initialYear() {
     const currDate = new Date;
     const currYear = currDate.getFullYear();
@@ -95,5 +126,59 @@ export class FilterService {
     }
     tempArr.sort((a,b) => +b - +a);
     this.years$.next(tempArr);
+  }
+
+  initialEngineSize() {
+    const decimalsArr = [];
+    for(let i = 0.1; i < 13; i+=.1) {
+      decimalsArr.push(i.toFixed(1));
+    }
+   this.engineSizes$.next(decimalsArr);
+  }
+
+  initialTransmission() {
+    const transmissions = [
+      'Manual',
+      'Automatic',
+      'Tiptronic',
+      'CVT'
+    ]
+    this.transmission$.next(transmissions);
+  }
+
+  initialFuel(){
+    const fuelTypes = [
+      'Gas',
+      'Diesel',
+      'Electric',
+      'Hybrid',
+      'Plugin hybrid',
+      'Air'
+    ]
+    this.fuelType$.next(fuelTypes);
+  }
+
+  initialUpload() {
+    const uploads = [
+      'Last hour',
+      'Past week',
+      'Past month'
+    ]
+    this.uploadDate$.next(uploads);
+  }
+
+  initialCustom() {
+    const customs = ['Custom cleared', 'Before customs'];
+    this.custom$.next(customs);
+  }
+
+  initialWheel() {
+    const wheelSides = ['Left wheel', 'Right-hand wheel'];
+    this.wheel$.next(wheelSides);
+  }
+
+  initialLocation() {
+    const locations = ['USA', 'Europe', 'Georgia'];
+    this.location$.next(locations);
   }
 }
