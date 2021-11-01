@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, from } from 'rxjs';
+import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators'
 import { Brand } from '../model/brands.model';
@@ -8,25 +8,55 @@ import { FormControl } from '@angular/forms';
 import { Model } from '../model/models.model';
 import { Category } from '../model/category.model';
 
+let _state = {
+  sellingType: ['Sell', 'Rent'],
+  brand: [],
+  model: [],
+  category: [],
+  years: [],
+  engineSizes: [],
+  transmission: [
+    'Manual',
+    'Automatic',
+    'Tiptronic',
+    'CVT'
+  ],
+  fuelType: [
+    'Gas',
+    'Diesel',
+    'Electric',
+    'Hybrid',
+    'Plugin hybrid',
+    'Air'
+  ],
+  uploadDate: ['Last hour','Past week','Past month'],
+  custom: ['Custom cleared', 'Before customs'],
+  wheel: ['Left wheel', 'Right-hand wheel'],
+  location: ['USA', 'Europe', 'Georgia']
+}
+
 @Injectable()
 export class FilterService {
-  
+  private $store = new BehaviorSubject(_state);
+  public state$ = this.$store.asObservable();
+
   fullBrand$ = new BehaviorSubject<Brand[]>([]);
-  sellingType$ = new BehaviorSubject(['Sell', 'Rent']);
-  brand$ = new BehaviorSubject<string[]>(['Loading']);
-  model$ = new BehaviorSubject<string[]>(['Loading']);
-  category$ = new BehaviorSubject<string[]>(['Loading']);
-  years$ = new BehaviorSubject<string[]>([]);
-  engineSizes$ = new BehaviorSubject<string[]>([])
-  transmission$ = new BehaviorSubject<string[]>([]);
-  fuelType$ = new BehaviorSubject<string[]>([]);
-  uploadDate$ = new BehaviorSubject<string[]>([]);
-  custom$ = new BehaviorSubject<string[]>([]);
-  wheel$ = new BehaviorSubject<string[]>([]);
-  location$ = new BehaviorSubject<string[]>([]);
+
+  sellingType$ = this.state$.pipe(map(state => state.sellingType),  distinctUntilChanged());
+  brand$ = this.state$.pipe(map(state => state.brand), distinctUntilChanged());
+  model$ = this.state$.pipe(map(state => state.model), distinctUntilChanged());
+  category$ = this.state$.pipe(map(state => state.category), distinctUntilChanged());
+  years$ = this.state$.pipe(map(state => state.years), distinctUntilChanged());
+  engineSizes$ = this.state$.pipe(map(state => state.engineSizes), distinctUntilChanged());
+  transmission$ = this.state$.pipe(map(state => state.transmission), distinctUntilChanged());
+  fuelType$ = this.state$.pipe(map(state => state.fuelType), distinctUntilChanged());
+  uploadDate$ = this.state$.pipe(map(state => state.uploadDate), distinctUntilChanged());
+  custom$ = this.state$.pipe(map(state => state.custom), distinctUntilChanged());
+  wheel$ = this.state$.pipe(map(state => state.wheel), distinctUntilChanged());
+  location$ = this.state$.pipe(map(state => state.location), distinctUntilChanged());
 
 
-  state$ = combineLatest([
+  vm$: Observable<any> = combineLatest([
     this.sellingType$,
     this.brand$,
     this.model$,
@@ -39,19 +69,27 @@ export class FilterService {
     this.custom$,
     this.wheel$,
     this.location$
-  ])
-  .pipe(
-    tap(e => console.log(e))
-  )
+  ]).pipe(
+      map(([sellingType, brand,model,category, years,engineSizes,transmission, fuelType,uploadDate,custom,wheel,location]) => {
+        return {
+          sellingType, 
+          brand,
+          model,
+          category,
+          years,
+          engineSizes,
+          transmission,
+           fuelType,
+           uploadDate,
+           custom,
+           wheel,
+           location
+        }
+      })
+    )
 
   constructor(private http: HttpClient) { 
     this.initialEngineSize();
-    this.initialTransmission();
-    this.initialFuel();
-    this.initialUpload();
-    this.initialCustom();
-    this.initialWheel();
-    this.initialLocation();
     this.initialYear();
     // fetching brands
     this.http.get<Brand[]>(environment.api.brands)
@@ -64,7 +102,10 @@ export class FilterService {
         }
       }),
       tap(brands => { 
-        this.brand$.next(brands.brandNames)
+        // this.brand$.next(brands.brandNames)
+        this.updateState({
+          ..._state, brand: brands.brandNames
+        });
         this.fullBrand$.next(brands.fullBrand)
        })
     )
@@ -74,7 +115,7 @@ export class FilterService {
     this.http.get<Category[]>(environment.api.category)
     .pipe(
       map(cats => cats.map(cat => cat.type)),
-      tap(cat => this.category$.next(cat))
+      tap(category => this.updateState({..._state, category}))
     )
     .subscribe()
   }
@@ -103,7 +144,7 @@ export class FilterService {
           fullModel: models
         }
       }),
-      tap(obj => this.model$.next(obj.modelNames))
+      tap(obj =>this.updateState({..._state, model: obj.modelNames }))
     )
     .subscribe()
     return brand;
@@ -112,9 +153,7 @@ export class FilterService {
   buildSearchTermControl(): FormControl {
     const searchTerm = new FormControl();
     searchTerm.valueChanges
-    .pipe(
-      tap(e => console.log(e))
-    )
+    .pipe()
     .subscribe()
 
     return searchTerm;
@@ -128,7 +167,9 @@ export class FilterService {
       tempArr.push(i.toString());
     }
     tempArr.sort((a,b) => +b - +a);
-    this.years$.next(tempArr);
+    this.updateState({
+      ..._state, years: tempArr
+    });
   }
 
   initialEngineSize() {
@@ -136,52 +177,12 @@ export class FilterService {
     for(let i = 0.1; i < 13; i+=.1) {
       decimalsArr.push(i.toFixed(1));
     }
-   this.engineSizes$.next(decimalsArr);
+   this.updateState({
+     ..._state, engineSizes: decimalsArr
+   });
   }
 
-  initialTransmission() {
-    const transmissions = [
-      'Manual',
-      'Automatic',
-      'Tiptronic',
-      'CVT'
-    ]
-    this.transmission$.next(transmissions);
-  }
-
-  initialFuel(){
-    const fuelTypes = [
-      'Gas',
-      'Diesel',
-      'Electric',
-      'Hybrid',
-      'Plugin hybrid',
-      'Air'
-    ]
-    this.fuelType$.next(fuelTypes);
-  }
-
-  initialUpload() {
-    const uploads = [
-      'Last hour',
-      'Past week',
-      'Past month'
-    ]
-    this.uploadDate$.next(uploads);
-  }
-
-  initialCustom() {
-    const customs = ['Custom cleared', 'Before customs'];
-    this.custom$.next(customs);
-  }
-
-  initialWheel() {
-    const wheelSides = ['Left wheel', 'Right-hand wheel'];
-    this.wheel$.next(wheelSides);
-  }
-
-  initialLocation() {
-    const locations = ['USA', 'Europe', 'Georgia'];
-    this.location$.next(locations);
+  private updateState(state: any) {
+    this.$store.next(_state = state);
   }
 }

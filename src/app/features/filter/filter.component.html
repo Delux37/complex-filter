@@ -1,6 +1,6 @@
 <form
   class="filter-form"
-  *ngIf="filterService.state$ | async as vm"
+  *ngIf="filterService.vm$ | async as vm"
   [formGroup]="form"
 >
   <div class="row">
@@ -8,28 +8,28 @@
       <app-custom-dropdown
         formControlName="sellingType"
         label="Selling type"
-        [options]="vm[0]"
+        [options]="vm.sellingType"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">
       <app-custom-dropdown
         formControlName="brand"
         label="Brand"
-        [options]="vm[1]"
+        [options]="vm.brand"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">
       <app-custom-dropdown
         formControlName="model"
         label="Model"
-        [options]="vm[2]"
+        [options]="vm.model"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">
       <app-custom-dropdown
         formControlName="category"
         label="Category"
-        [options]="vm[3]"
+        [options]="vm.category"
       ></app-custom-dropdown>
     </div>
   </div>
@@ -38,12 +38,12 @@
       <div class="form-control union">
         <app-custom-dropdown 
         label="Year - from"
-        [options]="vm[4]"
+        [options]="vm.years"
         formControlName="yearFrom"
         ></app-custom-dropdown>
         <app-custom-dropdown 
         label="Year - to"
-        [options]="vm[4]"
+        [options]="vm.years"
         formControlName="yearTo"
         ></app-custom-dropdown>
       </div>
@@ -60,12 +60,12 @@
       <div class="form-control union">
         <app-custom-dropdown 
         label="Engine - from"
-        [options]="vm[5]"
+        [options]="vm.engineSizes"
         formControlName="engineSizeFrom"
         ></app-custom-dropdown>
         <app-custom-dropdown 
         label="Engine - to"
-        [options]="vm[5]"
+        [options]="vm.engineSizes"
         formControlName="engineSizeTo"
         ></app-custom-dropdown>
       </div>
@@ -75,21 +75,21 @@
         <app-custom-dropdown
           formControlName="transmission"
           label="Transmission"
-          [options]="vm[6]"
+          [options]="vm.transmission"
         ></app-custom-dropdown>
       </div>
       <div class="form-control">
         <app-custom-dropdown
           formControlName="fuel"
           label="Fuel"
-          [options]="vm[7]"
+          [options]="vm.fuelType"
         ></app-custom-dropdown>
       </div>
       <div class="form-control">
         <app-custom-dropdown
           formControlName="upload"
           label="Upload"
-          [options]="vm[8]"
+          [options]="vm.uploadDate"
         ></app-custom-dropdown>
       </div>
     </div>
@@ -106,21 +106,21 @@
       <app-custom-dropdown
         formControlName="custom"
         label="Custom"
-        [options]="vm[9]"
+        [options]="vm.custom"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">
       <app-custom-dropdown
         formControlName="wheel"
         label="Wheel"
-        [options]="vm[10]"
+        [options]="vm.wheel"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">
       <app-custom-dropdown
         formControlName="location"
         label="Location"
-        [options]="vm[11]"
+        [options]="vm.location"
       ></app-custom-dropdown>
     </div>
     <div class="form-control">

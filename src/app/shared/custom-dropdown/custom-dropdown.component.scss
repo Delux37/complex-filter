@@ -37,7 +37,8 @@
         box-shadow: $primary-box-shadow;
         background-color: #fff;
         overflow-y: scroll;
-        height: 300px;
+        height: auto;
+        max-height: 300px;
         .option {
             padding: 5px 10px;
             transition: all .3s ease-in-out;
